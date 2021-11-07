@@ -5,7 +5,6 @@ from nltk.tokenize import sent_tokenize
 nltk.download('punkt')
 import re
 import pandas as pd
-import base64
 from readability import Readability
 
 # table of content
@@ -133,19 +132,14 @@ if result:
         })
     
     # download labelled file
-    st.write("Below is the labelled file, click it tp download.")
+    st.write("Below is the Flesch Kincaid Score file, click button to download.")
     csv = final_df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # some strings
-    linko= f'<a href="data:file/csv;base64,{b64}" download='+name+'>Download csv file</a>'
-    st.markdown(linko, unsafe_allow_html=True)
-
     st.download_button(
         label="Download data as CSV",
         data=csv,
         file_name='large_df.csv',
         mime='text/csv',
     )
-    
 st.write('\n')
 
 toc.generate()
