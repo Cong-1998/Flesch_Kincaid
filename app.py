@@ -108,6 +108,7 @@ st.write('\n')
 
 # upload file
 toc.header("Upload csv file")
+st.write("Please upload a csv file and make sure your data is in the first column. It will calculate the FK score in one pass.")
 file_upload = st.file_uploader("", type=["csv"])
 if file_upload is not None:
     data = pd.read_csv(file_upload, encoding='unicode_escape')
