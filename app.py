@@ -1,11 +1,13 @@
 # import libraries
 import streamlit as st
+from streamlit_player import st_player
 import nltk
 from nltk.tokenize import sent_tokenize
 nltk.download('punkt')
 import re
 import pandas as pd
 from readability import Readability
+from PIL import Image
 
 # table of content
 class Toc:
@@ -61,14 +63,35 @@ toc.placeholder()
 
 # calculate single text
 toc.header('Flesch Kincaid Calculator')
+st.write("Why using our [calculator](#why-using-our-calculator)❓")
 
 # input text
 TextBox = st.text_area('Enter text to check the readability', height=200)
 
 # run the test
 test = st.button("Calculate Readability")
+
+new_content = ''
+new_string = TextBox.replace("\\n", "")
+new_string2 = new_string.replace("\\xa0", "")
+new_string3 = new_string2.replace("\\'", "")
+new_string4 = re.sub(r'www\S+', '', new_string3)
+new_string5 = new_string4.replace("Â", "")
+new_string6 = new_string5.replace("\\x9d", "")
+new_string7 = new_string6.replace("â€", "")
+new_string8 = new_string7.replace("â€œ", "")
+new_string9 = new_string8.replace("œ", "")
+new_string11 = re.sub(' +', ' ', new_string9).strip()
+new_string12 = new_string11.replace(". . .", "")
+new_string13 = re.sub(r'http\S+', '', new_string12)
+new_string14 = re.sub(r'[-+]?\d*\.\d+|\d+', '', new_string13)
+new_content = new_string14
+    
 if test:
-    r = Readability(TextBox)
+    my_expander = st.expander(label='Cleaned Text')
+    with my_expander:
+        st.write(new_content)
+    r = Readability(new_content)
     fk = r.flesch_kincaid()
     statis = r.statistics()
     word = list(statis.items())[1][1]
@@ -103,19 +126,19 @@ if result:
     # clean data
     new_content = []
     for string in list_data:
-        new_string = string.replace("\n", " ")
-        new_string2 = new_string.replace("\xa0", "")
-        new_string3 = new_string2.replace("\'", "")
+        new_string = string.replace("\\n", " ")
+        new_string2 = new_string.replace("\\xa0", "")
+        new_string3 = new_string2.replace("\\'", "")
         new_string4 = re.sub(r'www\S+', '', new_string3)
         new_string5 = new_string4.replace("Â", "")
-        new_string6 = new_string5.replace("\x9d", "")
+        new_string6 = new_string5.replace("\\x9d", "")
         new_string7 = new_string6.replace("â€", "")
         new_string8 = new_string7.replace("â€œ", "")
         new_string9 = new_string8.replace("œ", "")
         new_string11 = re.sub(' +', ' ', new_string9).strip()
         new_string12 = new_string11.replace(". . .", "")
         new_string13 = re.sub(r'http\S+', '', new_string12)
-        new_string14 = re.sub(r'[-+]?\d*\.\d+|\d+', '10', new_string13)
+        new_string14 = re.sub(r'[-+]?\d*\.\d+|\d+', '', new_string13)
         new_content.append(new_string14)
 
     # Flesch-Kincaid Score
@@ -140,7 +163,28 @@ if result:
         file_name=name,
         mime='text/csv',
     )
-    
+st.write('\n')
+
+toc.header("Flesch–Kincaid Grade Level")
+st.write("These readability tests are used extensively in the field of education. The 'Flesch–Kincaid Grade Level Formula' instead presents a score as a U.S. grade level, making it easier for teachers, parents, librarians, and others to judge the readability level of various books and texts.")
+image = Image.open('formula.jpg')
+st.image(image, caption='Formula of Flesch–Kincaid Grade Level')
+st.write("\n")
+image2 = Image.open('table.jpg')
+st.image(image2, caption='Table of Flesch–Kincaid Grade Level')
+st.write("\n")
+
+toc.header("Why Using Our Calculator")
+st.write(
+    """    
+- **We remove number include decimal.**
+- **We remove url link.**
+    """)
+
+toc.header("Convert to CSV file")
+st.write('This video will teach you how to convert excel file to csv file.')
+# Embed a youtube video
+st_player("https://www.youtube.com/watch?v=IBbJzzj5r90")
 st.write('\n')
 
 toc.generate()
