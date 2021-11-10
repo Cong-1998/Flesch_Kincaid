@@ -1,3 +1,4 @@
 streamlit
+streamlit-player
 pandas==1.2.3
 nltk==3.5
