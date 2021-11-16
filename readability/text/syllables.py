@@ -15,11 +15,15 @@ def count(word):
 
     count = 0
 
-    if word.endswith('ly'):
+    if word.endswith('ly') or word.endswith('ty'):
         count = 1
         word = word[:-2]
+
+    if word.endswith('ful'):
+        count = 1
+        word = word[:-3]
         
-    if word.endswith('ment') or word.endswith('ness'):
+    if word.endswith('ment') or word.endswith('ness') or word.endswith('wise') or word.endswith('ward') or word.endswith('less') or word.endswith('ship'):
         count = 1
         word = word[:-4]
 
