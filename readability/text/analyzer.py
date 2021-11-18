@@ -129,7 +129,7 @@ class Analyzer:
         return tokenizer.tokenize(text)
 
     def _is_punctuation(self, token):
-        match = re.match('^[.,\/#!$%\'\^&\*;:{}=\-_`~()]$', token)
+        match = re.match('^[.,\/#!$%\'\^&\*\’;:{}=\-_`~()]$', token)
         return match is not None
 
     def _is_proper_noun(self, token):
